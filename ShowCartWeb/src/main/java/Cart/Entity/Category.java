@@ -13,6 +13,11 @@ public class Category {
 	public int getId() {
 		return id;
 	}
+	public Category(int id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
 	public void setId(int id) {
 		this.id = id;
 	}

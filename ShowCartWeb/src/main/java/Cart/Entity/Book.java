@@ -10,11 +10,37 @@ public class Book {
 		this.stock = stock;
 	}
 	public String name;
+	public Book(int id, String name, int category_id) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.category_id = category_id;
+	}
 	public int getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public Book(int id, String name, int category_id, String author, String title, int stock) {
+		super();
 		this.id = id;
+		this.name = name;
+		this.category_id = category_id;
+		this.author = author;
+		this.title = title;
+		this.stock = stock;
+	}
+	public Book() {
+		// TODO Auto-generated constructor stub
+	}
+		public Book(int id, String name, String author, String title, int stock) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.author = author;
+		this.title = title;
+		this.stock = stock;
+		}
+	public void setId(int string) {
+		this.id = string;
 	}
 	public String getName() {
 		return name;
@@ -50,4 +76,11 @@ public class Book {
 	public String author;
 	public String title; 
 	public int stock;
+	Category cate;
+	public Category getCate() {
+		return cate;
+	}
+	public void setCate(Category cate) {
+		this.cate = cate;
+	}
 }

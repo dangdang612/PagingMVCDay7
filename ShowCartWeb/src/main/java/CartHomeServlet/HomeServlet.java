@@ -1,6 +1,7 @@
 package CartHomeServlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -12,17 +13,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import Cart.Entity.Book;
 import Cart.Entity.Category;
-import CartDAO.BookDAO;
-import CartDAO.CategoryDAO;
+import CartDAO.CategoryService;
 
 /**
  * Servlet implementation class HomeServlet
  */
-@WebServlet("/HomeServlet")
+@WebServlet("/home")
 public class HomeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	CategoryDAO categoryDAO = new CategoryDAO();
-	BookDAO bookDAO = new BookDAO();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -37,26 +35,17 @@ public class HomeServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
 		try {
-			List<Category> categories = categoryDAO.getCategories(true);
-			List<Book> books =bookDAO.getAllBook();
+			CategoryService categoryService = new CategoryService();
+			List<Category> categoryList = categoryService.getBooksByCategory();
 			
-			request.setAttribute("categories", categories);
-			
-			String command = request.getParameter("command");
-			if(command!=null && command.equals("DETAIL")) {
-				int bookId = Integer.parseInt(request.getParameter("bookId"));
-				Book book = bookDAO.getBook(bookId);
-				request.setAttribute("book", book);
-			} else {
-				
-				request.setAttribute("books", books);
-			}
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/home.jsp");
-		request.setAttribute("categoryList", categories);
-		request.setAttribute("bookList", books);
-		dispatcher.forward(request,response);
-		} catch(Exception e) {
+			System.out.println(categoryList);
+			RequestDispatcher rd =request.getRequestDispatcher("home1.jsp");
+			request.setAttribute("categoryList", categoryList);
+			rd.forward(request, response);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

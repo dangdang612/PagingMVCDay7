@@ -1,8 +1,7 @@
 package CartHomeServlet;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import Cart.Entity.Book;
-import CartDAO.BookDAO;
+import CartDAO.BookService;
 
 /**
  * Servlet implementation class CartServlet
@@ -30,33 +29,22 @@ public class CartServlet extends HttpServlet {
     }
 
 	/**
-	 * @param id 
-	 * @throws Exception 
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response, int id) throws Exception {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
 		try {
-			String command=request.getParameter("command");
-			int bookId =0;
-			BookDAO bookDAO = new BookDAO();
+			String bookId= request.getParameter("bookId");
+			BookService bookService = new BookService();
+			Book book = bookService.getBooksDetail(Integer.parseInt(bookId));
+		
 			HttpSession session= request.getSession();
-			Map<Integer, Book> cart = (Map<Integer, Book>) session.getAttribute("cart");
+			session.setAttribute("cart", list);
 			
-			if(cart== null) {
-				cart=new HashMap<Integer, Book>();
-			}
-			
-			if(command !=null && command.equals("ADD_TO_CART")) {
-				bookId= Integer.parseInt(request.getParameter("bookId"));
-				Book book= BookDAO.getBook(bookId);
-				cart.put(book.getId(), book);
-				session.setAttribute("cart", cart);
-				response.sendRedirect("HomeServlet?command=DETAIL&bookId="+bookId);
-			} else if(command!=null && command.equals("VIEW_CART"))
-				request.setAttribute("cart", cart);
-				request.getRequestDispatcher("Cart.jsp").forward(request, response);
-			}catch(Exception e) {
+			response.sendRedirect("home");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
